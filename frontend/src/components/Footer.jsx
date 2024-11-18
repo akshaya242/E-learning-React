@@ -1,5 +1,6 @@
 import React from 'react';
-import "../style/style.css"
+import "../style/Footer.css"
+import logo from "../images/logo2.svg"
 
 const Footer = () => {
   return (
@@ -48,7 +49,7 @@ const Footer = () => {
         {/* Left Content */}
         <div className="left-contlist">
           <a href="/">
-            <img src="images/logo2.svg" alt="QuikLearn" width="110px" />
+            <img src={logo} alt="QuikLearn" width="110px" />
           </a>
           <span className="copyright-span" style={{ marginLeft: 20, color: '#686f7a' }}>
             Copyright © 2024 QuikLearn, Inc.
