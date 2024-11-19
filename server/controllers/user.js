@@ -6,7 +6,7 @@ import sendMail from "../middlewares/sendMail.js";
 export const register = async (req,res) => {
     try
     {
-        const { email,name,password } = req.body
+        const { email,name,password } = req.body;
          
         
         let user = await User.findOne({ email });

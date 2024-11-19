@@ -1,10 +1,9 @@
  import {createTransport } from 'nodemailer';
 
- const sendMail = async (req, res) => {
-    const { email, subject, data } = req.body;   
+ const sendMail = async ( email, subject, data) => {  
     const transporter = createTransport({
         host: 'smtp.gmail.com',
-        port: 587,
+        port: 465,
         secure: false, // or 'STARTTLS'
         auth: {
             user: process.env.Gmail,
@@ -63,13 +62,6 @@
                 subject: subject,
                 html
                 };
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        return res.status(500).json({ msg: 'Error sending email' });
-                        }
-                        res.status(200).json({ msg: 'Email sent successfully' });
-                        });
-                        };
-
+            }
 
 export default sendMail; 
