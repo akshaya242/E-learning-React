@@ -24,5 +24,4 @@ const schema = new mongoose.Schema({
         default: Date.now,
     },
 })
-
-export const lecture = Mongoose.model("Lecture", schema)
+export const Lecture = mongoose.model('Lecture', schema);
