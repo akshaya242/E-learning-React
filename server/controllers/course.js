@@ -24,10 +24,10 @@ export const getSingleCourse = TryCatch (async(req,res)=>{
 
 
 export const fetchLectures = TryCatch (async(req,res)=>{
-    const lectures = await Lecture.find({courses: req.params.id});
+    const lectures = await Lecture.find({course: req.params.id});
     const user = await User.findById(req.user._id);
     if(user.role == "admin"){
-        res.json({
+        return res.json({
             lectures
         })
     }
@@ -45,7 +45,7 @@ export const fetchlecutre = TryCatch (async(req,res)=>{
     const lecture = await Lecture.findById(req.params.id);
     const user = await User.findById(req.user._id);
     if(user.role == "admin"){
-        res.json({
+        return res.json({
             lecture
         })
     }
