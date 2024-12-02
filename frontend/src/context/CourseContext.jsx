@@ -7,6 +7,7 @@ const CourseContext = createContext()
 export const CourseContextProvider = ({children})=>{
     const [courses, setCourses] = useState([]);
     const [course, setCourse] = useState([]);
+    const [myCourse, setMyCourse] = useState([]);
     console.log(server)
     async function fetchCourses(){
         try {
@@ -27,11 +28,25 @@ export const CourseContextProvider = ({children})=>{
         }
       }
     
+      async function fetchMyCourse() {
+        try {
+          const { data } = await axios.get(`${server}/api/mycourse`, {
+            headers: {
+              token: localStorage.getItem("token"),
+            },
+          });
+    
+          setMyCourse(data.courses);
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
     useEffect(()=>{
         fetchCourses();
+        fetchMyCourse();
     },[])
-    return <CourseContext.Provider value={{courses, fetchCourses, fetchCourse, course}}>{children}</CourseContext.Provider>
+    return <CourseContext.Provider value={{courses, fetchCourses, fetchCourse, course, myCourse, fetchMyCourse,}}>{children}</CourseContext.Provider>
 }
 
 export const CourseData = ()=> useContext(CourseContext);
