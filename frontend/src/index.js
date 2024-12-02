@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {UserContextProvider}  from './context/UserContext';
+import { CourseContextProvider } from './context/CourseContext';
 
 export const server = "http://localhost:5000";
 
@@ -12,7 +13,9 @@ root.render(
   <React.StrictMode>  
    
    <UserContextProvider>
-    <App />
+    <CourseContextProvider>
+      <App />
+    </CourseContextProvider>
    </UserContextProvider>
     
   </React.StrictMode>
