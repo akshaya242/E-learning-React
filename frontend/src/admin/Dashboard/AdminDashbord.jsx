@@ -34,18 +34,21 @@ const AdminDashbord = ({ user }) => {
     <div>
       <Layout>
         <div className="main-content">
-          <div className="box">
-            <p>Total Courses</p>
-            <p>{stats.totalcourses}</p>
-          </div>
-          <div className="box">
-            <p>Total Lectures</p>
+          <div className="dashboard">
+            <div className = "card">
+              <h2 className= "h2">Total Courses</h2>
+              <p>{stats.totalcourses}</p>
+            </div>
+
+          <div className="card">
+            <h2 className= "h2">Total Lectures</h2>
             <p>{stats.totalLectures}</p>
           </div>
-          <div className="box">
-            <p>Total Users</p>
+          <div className="card">
+            <h2 className= "h2">Total Users</h2>
             <p>{stats.totalUser}</p>
           </div>
+        </div>
         </div>
       </Layout>
     </div>
