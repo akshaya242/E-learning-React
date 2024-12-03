@@ -14,7 +14,7 @@ const AdminUsers = ({ user }) => {
     fetchUsers();
   }, []);
 
-//   if (user && user.mainrole !== "superadmin") return navigate("/");
+  if (user && user.mainrole !== "superadmin") return navigate("/");
 
   async function fetchUsers() {
     try {

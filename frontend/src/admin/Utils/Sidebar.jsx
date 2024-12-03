@@ -38,15 +38,17 @@ const Sidebar = () => {
             </Link>
           </li>
         
-
-        <li>
+      {
+        user && user.role === "admin" && (
+          <li>
           <Link to={"/account"}>
             <div className="icon">
               <AiOutlineLogout />
             </div>
             <span>Logout</span>
           </Link>
-        </li>
+        </li>)}
+        
       </ul>
     </div>
   );

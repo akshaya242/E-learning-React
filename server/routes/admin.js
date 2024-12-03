@@ -13,4 +13,5 @@ router.get("/stats",isAuth,isAdmin,getAllstats);
 router.put("/user/:id", isAuth, updateRole);
 router.get("/users", isAuth, isAdmin, getAllUser);
 
+
 export default router;
