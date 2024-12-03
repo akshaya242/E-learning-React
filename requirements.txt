@@ -7,3 +7,5 @@
     "nodemailer": "^6.9.16"
     "razorpay": "^2.9.5",
     "cors": "^2.8.5",
+    "chart.js": "^4.4.7",
+    "react-chartjs-2": "^5.2.0",

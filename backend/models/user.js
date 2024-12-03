@@ -19,6 +19,10 @@ const schema = new mongoose.Schema({
         enum : ['admin','user', 'teacher'],
         default : 'user', 
     },
+    designation:{
+        type:String, 
+        default : 'user',   
+    },
     mainrole:{
         type: String,
         default : 'user',
