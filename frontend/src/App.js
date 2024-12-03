@@ -22,7 +22,7 @@ import AdminDashbord from './admin/Dashboard/AdminDashbord'
 import AdminCourses from './admin/Courses/AdminCourses'
 import AdminUsers from './admin/Users/AdminUser'
 import FaqSection from './pages/faq/Faq'
-import TeachersHome from './components/teachershome/TeachersHome'
+import Teacher from './pages/teachers/Teachers'
 
 const App = () => {
   const {isAuth, user, loading} = UserData()
@@ -34,7 +34,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/courses' element={<Courses />} />
-          <Route path='/teachers' element={<TeachersHome />} />
+          <Route path='/teachers' element={<Teacher />} />
           <Route path="/faqs" element={ <FaqSection />} />
           <Route path='/account' element={isAuth ? <Account user={user} />:<Login />} />
           <Route path='/login' element={isAuth? <Home />:<Login />} />

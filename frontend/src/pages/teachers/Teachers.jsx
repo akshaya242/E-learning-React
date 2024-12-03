@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { UserData } from '../../context/UserContext'; // Adjust the import path if needed
-import "./TeachersHome.css"
+import "./Teacher.css"
 import { Link } from 'react-router-dom';
 
-const TeachersHome = () => {
+const Teacher = () => {
   const { teachers, fetchTeachers } = UserData(); // Access teachers and fetchTeachers from context
 
   // Fetch teachers when the component mounts (if not already done in the context)
@@ -14,7 +14,7 @@ const TeachersHome = () => {
   }, [teachers, fetchTeachers]);
 
   return (
-    <div className="teachers-home">
+    <div className="teachers">
       <h2 style={{color: 'white'}}>All Teachers</h2>
       <div className="teachers-cards">
         {teachers.length > 0 ? (
@@ -36,13 +36,9 @@ const TeachersHome = () => {
           <p>No teachers found.</p>
         )}
       </div>
-      <Link to="/teachers">
-      <button className="common-btn" style={{ marginTop: '2%', marginLeft: '55%' }}>
-        View All Teachers
-      </button>
-    </Link>
+      
     </div>
   );
 };
 
-export default TeachersHome;
+export default Teacher;

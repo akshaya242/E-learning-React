@@ -1,7 +1,7 @@
 import React from 'react';
 import './FaqsHome.css'; // Import CSS for styling
 
-const FaqsHome = () => {
+const FaqsHome = () => {    
     const faqs = {
       
         rows: [

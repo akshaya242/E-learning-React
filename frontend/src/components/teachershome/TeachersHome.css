@@ -1,13 +1,14 @@
 .teachers-home {
-    margin-top: 4%;
-    padding: 2rem;
-    background-color: darkcyan;
+     padding: 2rem;
+    /* background-color: darkcyan; */
     color: white;
   }
   
   h2 {
     text-align: center;
-    color: darkcyan;
+    color: white;
+    background-color: darkcyan;
+    height: 50px;
   }
   
   .teachers-cards {
