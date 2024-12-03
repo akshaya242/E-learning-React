@@ -52,7 +52,7 @@ export const fetchlecutre = TryCatch (async(req,res)=>{
             lecture
         })
     }
-    if(!user.subscription.includes(req.params.id))
+    if(!user.subscription.includes(lecture.course))
         return res.status(400).json({
             message : "You have not access to the courses"
         })

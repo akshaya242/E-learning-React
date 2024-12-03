@@ -10,7 +10,7 @@ export const UserContextProvider = ({children})=>{
     const [isAuth, setIsAuth] = useState(false)
     const [btnLoading, setBtnLoading] = useState(false)
     const [loading, setLoading] = useState(true)
-    async function loginUser(email, password, navigate) {
+    async function loginUser(email, password, navigate, fetchMyCourse) {
         setBtnLoading(true)
         try{
             
@@ -19,8 +19,10 @@ export const UserContextProvider = ({children})=>{
             localStorage.setItem("token", data.token)
             setUser(data.user)
             setIsAuth(true)
-            setBtnLoading(true)
+            setBtnLoading(false)
             navigate("/")
+            fetchMyCourse();
+
         }
         catch(error){
             setBtnLoading(false)
