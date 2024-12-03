@@ -21,6 +21,7 @@ import Lecture from './pages/lecture/Lecture'
 import AdminDashbord from './admin/Dashboard/AdminDashbord'
 import AdminCourses from './admin/Courses/AdminCourses'
 import AdminUsers from './admin/Users/AdminUser'
+import FaqSection from './pages/faq/Faq'
 
 const App = () => {
   const {isAuth, user, loading} = UserData()
@@ -32,6 +33,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/courses' element={<Courses />} />
+          <Route path="/faq" element={ <FaqSection />} />
           <Route path='/account' element={isAuth ? <Account user={user} />:<Login />} />
           <Route path='/login' element={isAuth? <Home />:<Login />} />
           <Route path='/register' element={isAuth? <Home />:<Register />} />
@@ -44,6 +46,7 @@ const App = () => {
           <Route path="/admin/dashboard" element={isAuth ? <AdminDashbord user={user} /> : <Login />}/>
           <Route path="/admin/course" element={isAuth ? <AdminCourses user={user} /> : <Login />}/>
           <Route path="/admin/users" element={isAuth ? <AdminUsers user={user} /> : <Login />} />
+          
         </Routes>
         <Footer />
       </BrowserRouter>}
