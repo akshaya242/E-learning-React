@@ -15,7 +15,7 @@ const TeachersHome = () => {
 
   return (
     <div className="teachers-home">
-      <h2 style={{color: 'white'}}>All Teachers</h2>
+      <h2 style={{color: 'white'}} className='h2-teachers-home'>All Teachers</h2>
       <div className="teachers-cards">
         {teachers.length > 0 ? (
           teachers.map((teacher) => (

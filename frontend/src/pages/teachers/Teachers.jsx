@@ -15,7 +15,7 @@ const Teacher = () => {
 
   return (
     <div className="teachers">
-      <h2 style={{color: 'white'}}>All Teachers</h2>
+      <h2 className='h2-teacher'style={{color: 'white'}}>All Teachers</h2>
       <div className="teachers-cards">
         {teachers.length > 0 ? (
           teachers.map((teacher) => (
