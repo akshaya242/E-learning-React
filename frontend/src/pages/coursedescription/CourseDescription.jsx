@@ -77,7 +77,7 @@ const CourseDescription = ({ user }) => {
           }
         },
         theme: {
-          color: "#8a4baf",
+          color: "darkcyan",
         },
       };
       const razorpay = new window.Razorpay(options);
