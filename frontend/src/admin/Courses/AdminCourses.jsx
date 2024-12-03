@@ -27,10 +27,9 @@ const AdminCourses = ({ user }) => {
   const [image, setImage] = useState("");
   const [imagePrev, setImagePrev] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
 
   if (user && user.role !== "admin") return navigate("/");
-
-  
 
   const changeImageHandler = (e) => {
     const file = e.target.files[0];
@@ -78,8 +77,10 @@ const AdminCourses = ({ user }) => {
       setCreatedBy("");
       setPrice("");
       setCategory("");
+      setShowModal(false); // Close modal after submission
     } catch (error) {
       toast.error(error.response.data.message);
+      setBtnLoading(false);
     }
   };
 
@@ -87,7 +88,25 @@ const AdminCourses = ({ user }) => {
     <Layout>
       <div className="admin-courses">
         <div className="left">
-          <h1>All Courses</h1>
+          <h1 style={{ marginTop: "100px" }}>All Courses</h1>
+          {/* Button to open modal */}
+          <button
+            className="toggle-form-btn"
+            onClick={() => setShowModal(true)}
+            style={{
+              position: "absolute",
+              right: "20px",
+              top: "100px",
+              background: "darkcyan",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Add Course
+          </button>
           <div className="dashboard-content">
             {courses && courses.length > 0 ? (
               courses.map((e) => {
@@ -99,77 +118,86 @@ const AdminCourses = ({ user }) => {
           </div>
         </div>
 
-        <div className="right">
-          <div className="add-course">
-            <div className="course-form">
-              <h2>Add Course</h2>
-              <form onSubmit={submitHandler}>
-                <label htmlFor="text">Title</label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
+        {/* Modal */}
+      {showModal && (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <button className="close-modal" onClick={() => setShowModal(false)}>
+            &times;
+          </button>
+          <h2>Add Course</h2>
+          <form onSubmit={submitHandler}>
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
 
-                <label htmlFor="text">Description</label>
-                <input
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                />
+            <label htmlFor="description">Description</label>
+            <input
+              type="text"
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
 
-                <label htmlFor="text">Price</label>
-                <input
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
+            <label htmlFor="price">Price</label>
+            <input
+              type="number"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            />
 
-                <label htmlFor="text">createdBy</label>
-                <input
-                  type="text"
-                  value={createdBy}
-                  onChange={(e) => setCreatedBy(e.target.value)}
-                  required
-                />
+            <label htmlFor="createdBy">Created By</label>
+            <input
+              type="text"
+              id="createdBy"
+              value={createdBy}
+              onChange={(e) => setCreatedBy(e.target.value)}
+              required
+            />
 
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  <option value={""}>Select Category</option>
-                  {categories.map((e) => (
-                    <option value={e} key={e}>
-                      {e}
-                    </option>
-                  ))}
-                </select>
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value={""}>Select Category</option>
+              {categories.map((e) => (
+                <option value={e} key={e}>
+                  {e}
+                </option>
+              ))}
+            </select>
 
-                <label htmlFor="text">Duration</label>
-                <input
-                  type="number"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                  required
-                />
+            <label htmlFor="duration">Duration</label>
+            <input
+              type="number"
+              id="duration"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              required
+            />
 
-                <input type="file" required onChange={changeImageHandler} />
-                {imagePrev && <img src={imagePrev} alt="" width={300} />}
+            <label htmlFor="file">Upload Image</label>
+            <input type="file" id="file" required onChange={changeImageHandler} />
+            {imagePrev && <img src={imagePrev} alt="Preview" />}
 
-                <button
-                  type="submit"
-                  disabled={btnLoading}
-                  className="common-btn"
-                >
-                  {btnLoading ? "Please Wait..." : "Add"}
-                </button>
-              </form>
-            </div>
-          </div>
+            <button type="submit" className="common-btn" disabled={btnLoading}>
+              {btnLoading ? "Please Wait..." : "Add"}
+            </button>
+          </form>
         </div>
+      </div>
+)}
+
       </div>
     </Layout>
   );

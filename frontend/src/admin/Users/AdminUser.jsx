@@ -10,12 +10,15 @@ const AdminUsers = ({ user }) => {
   const navigate = useNavigate();
   
   const [users, setUsers] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState({}); // Store selected role per user
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   if (user && user.mainrole !== "superadmin") return navigate("/");
 
+  // Fetch users function
   async function fetchUsers() {
     try {
       const { data } = await axios.get(`${server}/api/users`, {
@@ -25,35 +28,45 @@ const AdminUsers = ({ user }) => {
       });
 
       setUsers(data.users);
+      // Initialize selectedRoles state for each user
+      const initialRoles = data.users.reduce((acc, user) => {
+        acc[user._id] = user.role; // Set the initial role
+        return acc;
+      }, {});
+      setSelectedRoles(initialRoles);
     } catch (error) {
       console.log(error);
     }
   }
 
- 
-
+  // Update the user's role
   const updateRole = async (id) => {
-    // if (confirm("are you sure you want to update this user role")) {
-      try {
-        const { data } = await axios.put(
-          `${server}/api/user/${id}`,
-          {},
-          {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
-          }
-        );
+    const newRole = selectedRoles[id]; // Get the selected role for this user
+    try {
+      const { data } = await axios.put(
+        `${server}/api/user/${id}`,
+        { role: newRole },
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
 
-        toast.success(data.message);
-        fetchUsers();
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    // }
+      toast.success(data.message);
+      fetchUsers(); // Refresh the user list after the role update
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
-  console.log(users);
+  const handleRoleChange = (id, role) => {
+    setSelectedRoles((prev) => ({
+      ...prev,
+      [id]: role, // Update the role for the specific user
+    }));
+  };
+
   return (
     <Layout>
       <div className="users">
@@ -61,30 +74,50 @@ const AdminUsers = ({ user }) => {
         <table border={"black"}>
           <thead>
             <tr>
-              <td>#</td>
-              <td>name</td>
-              <td>email</td>
-              <td>role</td>
-              <td>update role</td>
+              <td>Sr.No</td>
+              <td>Name</td>
+              <td>Email</td>
+              <td>Role</td>
+              <td>Update role</td>
+              <td>Requesting access for</td>
             </tr>
           </thead>
-
           {users &&
             users.map((e, i) => (
-              <tbody>
+              <tbody key={e._id}>
                 <tr>
                   <td>{i + 1}</td>
                   <td>{e.name}</td>
                   <td>{e.email}</td>
-                  <td>{e.role}</td>
                   <td>
+                    {e.role === "user"
+                      ? "User"
+                      : e.role === "admin"
+                      ? "Admin"
+                      : e.role === "teacher"
+                      ? "Teacher"
+                      : ""}
+                  </td>
+                  <td>
+                    {/* Select dropdown to change role */}
+                    <select
+                      value={selectedRoles[e._id] || e.role} // Default to current role
+                      onChange={(event) => handleRoleChange(e._id, event.target.value)}
+                    >
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                      <option value="teacher">Teacher</option>
+                    </select>
                     <button
-                      onClick={() => updateRole(e._id)}
+                      onClick={() => updateRole(e._id)} // Update role based on selected value
                       className="common-btn"
                     >
                       Update Role
                     </button>
                   </td>
+
+                  <td>{e.role !== "admin" && e.designation}</td>
+
                 </tr>
               </tbody>
             ))}
