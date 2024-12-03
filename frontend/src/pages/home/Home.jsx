@@ -4,6 +4,8 @@ import "./Home.css"
 import Testimonials from '../../components/testimonials/Testimonials.jsx';
 import CoursesHome from '../../components/courseshome/CoursesHome.jsx';
 import Slider from '../../components/slider/Slider.jsx';
+import FaqSection from '../faq/Faq.jsx';
+import FaqsHome from '../../components/faqshome/FaqsHome.jsx';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -20,6 +22,7 @@ const Home = () => {
         </div> */}
         <Slider />
         <CoursesHome />
+        <FaqsHome />
     </div>
   )
 }

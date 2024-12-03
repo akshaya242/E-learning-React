@@ -115,3 +115,38 @@ export const myProfile = TryCatch(async (req,res) => {
 
     res.json({user})
 });
+
+export const getAllTeachers = TryCatch(async (req, res) => {
+    const teachers = await User.find({ role: "teacher" }).select("-password"); // Excluding password field for security
+    
+    if (!teachers || teachers.length === 0) {
+      return res.status(404).json({ message: "No teachers found" });
+    }
+  
+    res.json({ teachers });
+  });
+
+  export const teacherDashboard = TryCatch(async (req, res) => {
+    const teacherId = req.user.id; // Assuming authentication middleware adds `user` to `req`
+  
+    const courses = await Courses.find({ createdBy: teacherId });
+  
+    let totalStudents = 0;
+    let totalRevenue = 0;
+  
+    for (const course of courses) {
+      const studentsEnrolled = await Progress.find({ course: course._id }).countDocuments();
+      totalStudents += studentsEnrolled;
+      totalRevenue += studentsEnrolled * course.price;
+    }
+  
+    res.json({
+      success: true,
+      data: {
+        totalCourses: courses.length,
+        totalStudents,
+        totalRevenue,
+        courses,
+      },
+    });
+  });
