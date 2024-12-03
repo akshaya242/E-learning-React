@@ -19,6 +19,10 @@ const schema = new mongoose.Schema({
         enum : ['admin','user'],
         default : 'user', 
     },
+    mainrole:{
+        type: String,
+        default : 'user',
+    },
     subscription:[
         {
             type : mongoose.Schema.Types.ObjectId,

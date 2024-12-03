@@ -65,26 +65,52 @@ export const deleteLecture = TryCatch (async (req,res) => {
 
 const unlinkAsync = promisify(fs.unlink)
 
-
-export const deleteCourse= TryCatch (async (req,res) => {
-    const  course = await Courses.findById(req.params.id)
-    const  lectures = await Lecture.findById({course:course._id})
-   await Promise.all(
-    lectures.map(async(lecture)=>{
-        await unlinkAsync(lecture.video);
-        console.log("video delgted");
-    }));
-    rm(course.image,()=>{
-        console.log("Image deleted");
-       });
-    await Lecture.find({course :req.params.id}).deleteMany()
-    await course.deleteOne()
-    await User.updateMany({},{$pull:{subscription :req.params.id}})
-
+export const deleteCourse = TryCatch(async (req, res) => {
+    // Find the course by ID
+    const course = await Courses.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+  
+    // Find associated lectures
+    const lectures = await Lecture.find({ course: course._id });
+  
+    // Delete all video files associated with lectures
+    await Promise.all(
+      lectures.map(async (lecture) => {
+        try {
+          await unlinkAsync(lecture.video);
+          console.log("Video deleted:", lecture.video);
+        } catch (error) {
+          console.error("Error deleting video:", error.message);
+        }
+      })
+    );
+  
+    // Delete course image
+    try {
+      rm(course.image, () => {
+        console.log("Image deleted:", course.image);
+      });
+    } catch (error) {
+      console.error("Error deleting image:", error.message);
+    }
+  
+    // Delete lectures associated with the course
+    await Lecture.deleteMany({ course: req.params.id });
+  
+    // Delete the course itself
+    await course.deleteOne();
+  
+    // Update users by removing the course from their subscriptions
+    await User.updateMany({}, { $pull: { subscription: req.params.id } });
+  
+    // Send success response
     res.json({
-        message :"course deleted",
-    })
-});
+      message: "Course deleted successfully",
+    });
+  });
+  
 
 
 export const getAllstats = TryCatch (async (req,res) => {
@@ -115,10 +141,10 @@ export const getAllUser = TryCatch(async (req, res) => {
   });
 
   export const updateRole = TryCatch(async (req, res) => {
-    // if (req.user.mainrole !== "superadmin")
-    //   return res.status(403).json({
-    //     message: "This endpoint is assign to superadmin",
-    //   });
+    if (req.user.mainrole !== "superadmin")
+      return res.status(403).json({
+        message: "This endpoint is assign to superadmin",
+      });
     const user = await User.findById(req.params.id);
   
     if (user.role === "user") {
