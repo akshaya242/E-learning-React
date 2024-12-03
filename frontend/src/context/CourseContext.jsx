@@ -8,7 +8,7 @@ export const CourseContextProvider = ({children})=>{
     const [courses, setCourses] = useState([]);
     const [course, setCourse] = useState([]);
     const [myCourse, setMyCourse] = useState([]);
-    console.log(server)
+    // console.log(server)
     async function fetchCourses(){
         try {
             const {data} = await axios.get(`${server}/api/course/all`) 

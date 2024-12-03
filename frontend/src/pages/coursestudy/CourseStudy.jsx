@@ -2,20 +2,21 @@ import React, { useEffect } from "react";
 import "./CourseStudy.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CourseData } from "../../context/CourseContext";
-import { server } from '../../index.js'
+import { server } from "../../index";
 
 const CourseStudy = ({ user }) => {
   const params = useParams();
 
   const { fetchCourse, course } = CourseData();
+  console.log(course)
   const navigate = useNavigate();
-
-  if (user && user.role !== "admin" && !user.subscription.includes(params.id))
-    return navigate("/");
-
   useEffect(() => {
     fetchCourse(params.id);
   }, []);
+  if (user && user.role !== "admin" && !user.subscription.includes(params.id))
+    return navigate("/");
+
+ 
   return (
     <>
       {course && (
