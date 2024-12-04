@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./CourseCard.css";
 import { server } from "../../index";
 import { UserData } from "../../context/UserContext";
@@ -10,25 +10,55 @@ import { CourseData } from "../../context/CourseContext";
 const CourseCard = ({ course }) => {
   const navigate = useNavigate();
   const { user, isAuth } = UserData();
-
   const { fetchCourses } = CourseData();
 
-  const deleteHandler = async (id) => {
-   
-      try {
-        const { data } = await axios.delete(`${server}/api/course/${id}`, {
+  // Track enrollment status in local state
+  const [isEnrolled, setIsEnrolled] = useState(false);
+
+  // Check if the user is enrolled when the component mounts or user data changes
+  useEffect(() => {
+    if (user && user.subscription.includes(course._id)) {
+      setIsEnrolled(true);
+    }
+  }, [user, course._id]); // Re-run effect when user or course changes
+
+  // Unenroll handler
+  const unenrollHandler = async (courseId) => {
+    try {
+      const { data } = await axios.post(
+        `${server}/api/unenroll`, 
+        { courseId, user },
+        {
           headers: {
             token: localStorage.getItem("token"),
           },
-        });
+        }
+      );
 
-        toast.success(data.message);
-        fetchCourses();
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-  
+      toast.success(data.message);
+      setIsEnrolled(false); 
+      fetchCourses(); 
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
+
+  // Delete handler for admin
+  const deleteHandler = async (id) => {
+    try {
+      const { data } = await axios.delete(`${server}/api/course/${id}`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      });
+
+      toast.success(data.message);
+      fetchCourses();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <div className="course-card">
       <img src={`${server}/${course.image}`} alt="" className="course-image" />
@@ -36,17 +66,27 @@ const CourseCard = ({ course }) => {
       <p>Instructor- {course.createdBy}</p>
       <p>Duration- {course.duration} weeks</p>
       <p>Price- ₹{course.price}</p>
+
       {isAuth ? (
         <>
           {user && user.role !== "admin" ? (
             <>
-              {user.subscription.includes(course._id) ? (
-                <button
-                  onClick={() => navigate(`/course/study/${course._id}`)}
-                  className="common-btn"
-                >
-                  Study
-                </button>
+              {isEnrolled ? (
+                <>
+                  <button
+                    onClick={() => navigate(`/course/study/${course._id}`)}
+                    className="common-btn"
+                  >
+                    Study
+                  </button>
+                  <button
+                    onClick={() => unenrollHandler(course._id)}
+                    className="common-btn"
+                    style={{ backgroundColor: "red" }}
+                  >
+                    Unenroll
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={() => navigate(`/course/${course._id}`)}
