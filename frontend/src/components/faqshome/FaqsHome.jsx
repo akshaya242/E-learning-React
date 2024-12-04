@@ -16,7 +16,7 @@ const FaqsHome = () => {
           },
           {
             title: "Can I access course materials after completing the course?",
-            content: "Yes, once you enroll in a course, you will have lifetime access to the course materials, even after you complete it."
+            content: `Yes, once you enroll in a course, you will have lifetime access to the course materials, even after you complete it.`,
           },
                   
         
