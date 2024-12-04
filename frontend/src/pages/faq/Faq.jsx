@@ -1,6 +1,9 @@
 import React from "react";
 import "./Faq.css"; // Add a CSS file for styling if needed
 import Faq from "react-faq-component";
+import React from "react";
+import "./Faq.css"; // Add a CSS file for styling if needed
+import Faq from "react-faq-component";
 
 const FaqSection = () => {
   const data = {

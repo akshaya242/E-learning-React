@@ -5,21 +5,21 @@ body {
   color: var(--color-text, #313135);
   margin: 0;
   padding: 0;
-  background-color: var(--color-bg, #f9f9f9);
+  background-color: var(--color-bg, #ffffff);
 }
 
 .faq-section {
-  padding: 2rem 1rem;
+  padding: 1rem 3rem;
   background-color: white;
   border-radius: var(--radius-md, 0.5rem);
   box-shadow: var(--shadow-md, 0 1px 8px rgba(0, 0, 0, 0.1));
   max-width: var(--max-width-lg, 800px);
-  margin: 2rem auto;
+  margin: 10rem auto;
 }
 
 .faq-content h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 1.4rem;
   color: var(--color-primary, #007791);
   text-align: center;
 }
