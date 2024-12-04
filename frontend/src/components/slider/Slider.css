@@ -1,5 +1,5 @@
 .animation {
-  margin: 80px auto; /* Centers the slider horizontally */
+  margin: 10px auto; /* Centers the slider horizontally */
   height: 600px; /* Maintain the slider height */
   position: relative; /* Ensures no absolute positioning conflicts */
   z-index: 1; /* Keeps the slider above other elements if needed */
