@@ -7,7 +7,7 @@ const CourseContext = createContext()
 export const CourseContextProvider = ({children})=>{
     const [courses, setCourses] = useState([]);
     const [course, setCourse] = useState([]);
-    const [myCourse, setMyCourse] = useState([]);
+    const [mycourse, setMyCourse] = useState([]);
     // console.log(server)
     async function fetchCourses(){
         try {
@@ -46,7 +46,7 @@ export const CourseContextProvider = ({children})=>{
         fetchCourses();
         fetchMyCourse();
     },[])
-    return <CourseContext.Provider value={{courses, fetchCourses, fetchCourse, course, myCourse, fetchMyCourse,}}>{children}</CourseContext.Provider>
+    return <CourseContext.Provider value={{courses, fetchCourses, fetchCourse, course, mycourse, fetchMyCourse,}}>{children}</CourseContext.Provider>
 }
 
 export const CourseData = ()=> useContext(CourseContext);
