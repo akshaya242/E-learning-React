@@ -7,7 +7,7 @@ const FaqsHome = () => {
         rows: [
           {
             title: "How do I choose a course?",
-            content: `You can browse our course catalog by subject, popularity, or rating. Each course page includes a description, syllabus, and user reviews to help you make an informed decision.`,
+            content: "You can browse our course catalog by subject, popularity, or rating. Each course page includes a description, syllabus, and user reviews to help you make an informed decision."
           },
           {
             title: "What is the duration of the courses?",

@@ -11,7 +11,7 @@ const CoursesHome = () => {
 
   return (
     <div className="courses">
-      <h2 className="courses-home" style={{color: 'white'}}>Top Courses</h2>
+      <h2>Top Courses</h2>
       <div className="course-container">
         {courses && courses.length > 0 ? (
           courses.slice(0, 3).map((e) => <CourseCard key={e._id} course={e} />)

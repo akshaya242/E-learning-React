@@ -26,7 +26,7 @@ const CourseCard = ({ course }) => {
   const unenrollHandler = async (courseId) => {
     try {
       const { data } = await axios.post(
-        `${server}/api/unenroll`, 
+      `${server}/api/unenroll`,
         { courseId, user },
         {
           headers: {
