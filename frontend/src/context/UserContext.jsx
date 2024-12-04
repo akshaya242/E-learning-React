@@ -137,7 +137,7 @@ const fetchTeacherCourses = async () => {
         fetchUser();
         fetchTeachers()
     }, [])
-    return <userContext.Provider value={{ user, setUser, isAuth, setIsAuth,loginUser, btnLoading, loading, registerUser, verifyOtp, teachers,fetchTeacherDashboard, teacherDashboardData,teacherCourses, fetchTeacherCourses}}>
+    return <userContext.Provider value={{ user, setUser, isAuth, setIsAuth,loginUser, btnLoading, loading, registerUser, verifyOtp, teachers,fetchTeachers,fetchTeacherDashboard, teacherDashboardData,teacherCourses, fetchTeacherCourses}}>
         {children}
         <Toaster />
         </userContext.Provider>

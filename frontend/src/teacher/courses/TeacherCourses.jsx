@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Layout from "../../../src/admin/Utils/Layout"; // Assuming Layout is correctly imported
-import { UserData } from "../../context/UserContext"; // Assuming UserData context is correctly imported
+import Layout from "../../../src/admin/Utils/Layout";
+import { UserData } from "../../context/UserContext";
 import axios from "axios";
 import { server } from '../../index';
-import "./TeacherCourses.css"
+import Report from "./Report"; // Import the Report component
+import "./TeacherCourses.css";
 
 const TeacherCourses = () => {
-  const { user } = UserData(); // Access user data from context
+  const { user } = UserData();
   const [loading, setLoading] = useState(false);
   const [teacherCourses, setTeacherCourses] = useState([]);
-  console.log(teacherCourses)
-  // Fetch courses on initial render
+  const [reportData, setReportData] = useState(null);
+  const [showReport, setShowReport] = useState(false);
+
   useEffect(() => {
     if (user && user._id) {
       fetchTeacherCourses();
@@ -23,7 +25,7 @@ const TeacherCourses = () => {
       const { data } = await axios.get(`${server}/api/teacher/${user._id}/courses`, {
         headers: { token: localStorage.getItem("token") }
       });
-      setTeacherCourses(data.data); // Store courses data
+      setTeacherCourses(data.data);
     } catch (error) {
       console.error("Error fetching teacher courses:", error);
     } finally {
@@ -36,45 +38,57 @@ const TeacherCourses = () => {
     // Implement update course details functionality
   };
 
-  const handleReport = (courseId) => {
-    console.log(`Generate report for course with ID: ${courseId}`);
-    // Implement report functionality
+  const handleReport = async (courseId) => {
+    try {
+      const response = await axios.get(`${server}/api/courses/${courseId}/report`);
+      setReportData(response.data); // Store the report data
+      setShowReport(true); // Show the Report component
+    } catch (error) {
+      if (error.response) {
+        console.error("Error generating report:", error.response.data);
+      } else if (error.request) {
+        console.error("Error generating report: No response from server");
+      } else {
+        console.error("Error generating report:", error.message);
+      }
+    }
   };
 
   const handleDelete = async (courseId) => {
     try {
-      // Ask for user confirmation before proceeding with the delete action
       const confirmation = window.confirm("Are you sure you want to delete this course?");
       if (!confirmation) return;
-  
-      // Send DELETE request to the backend
+
       await axios.delete(`${server}/api/teacher/course/${courseId}`, {
         headers: { token: localStorage.getItem("token") }
       });
-  
-      // Fetch the updated list of courses after successful deletion
+
       fetchTeacherCourses();
-      
       alert("Course deleted successfully!");
     } catch (error) {
       console.error("Error deleting course:", error);
       alert("Error deleting course.");
     }
   };
-  
-  
+
+  const closeReport = () => {
+    setShowReport(false); // Close the Report component
+    setReportData(null); // Clear the report data
+  };
+
   return (
     <Layout>
       <div className="teacher-courses">
         <h1>Your Courses</h1>
         {loading ? (
           <p>Loading courses...</p>
+        ) : showReport ? (
+          <Report data={reportData} closeReport={closeReport} /> // Render the Report component
         ) : (
           <div className="course-cards">
             {teacherCourses.length > 0 ? (
               teacherCourses.map((course) => (
                 <div key={course._id} className="course-card">
-                  {/* Render course image */}
                   {course.image && (
                     <img src={`${server}/${course.image}`} alt={course.title} className="course-image" />
                   )}

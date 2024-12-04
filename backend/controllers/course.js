@@ -181,3 +181,35 @@ export const checkout = TryCatch(async (req, res) => {
       progress,
     });
   });
+
+export const generateCourseReport = TryCatch(async (req, res) => {
+  const { id: courseId } = req.params; // Extract course ID from URL parameters
+
+  // Get all users subscribed to the course
+  const subscribedUsers = await User.find({ subscription: courseId }).select("name email");
+
+  if (!subscribedUsers.length) {
+    return res.status(404).json({ message: "No users subscribed to this course." });
+  }
+
+  // Fetch progress data for each subscribed user
+  const progressData = await Promise.all(
+    subscribedUsers.map(async (user) => {
+      const progress = await Progress.findOne({ course: courseId, user: user._id })
+        .populate("completedLectures", "title")
+        .select("completedLectures");
+
+      return {
+        name: user.name,
+        email: user.email,
+        completedLectures: progress?.completedLectures.length || 0,
+      };
+    })
+  );
+
+  res.json({
+    courseId,
+    totalSubscribers: subscribedUsers.length,
+    progress: progressData,
+  });
+});
