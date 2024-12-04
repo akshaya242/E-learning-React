@@ -1,44 +1,75 @@
-.course-description {
-    padding: 80px 0;
-    text-align: center;
-    min-height: 55vh;
-  
-    .course-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 40px;
-  
-      .course-image {
-        width: 200px;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 10px;
-      }
-  
-      .course-info {
-        text-align: left;
-  
-        h2 {
-          font-size: 24px;
-          color: #333;
-        }
-  
-        p {
-          font-size: 14px;
-          color: #666;
-          margin: 5px 0;
-        }
-      }
-  
-      p {
-        font-size: 16px;
-        color: #333;
-        text-align: center;
-        max-width: 800px;
-        margin: 0 auto;
-      }
-    }
+.course-description-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #012a2e;
+  padding: 100px 20px;
+  min-height: 80vh;
+}
+
+.course-description-card {
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transform: scale(0.9);
+  animation: popIn 0.8s ease-out forwards;
+}
+
+.course-description-image {
+  width: 100%;
+  max-width: 330px;
+  max-height: 200px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.course-description-card h2 {
+  font-size: 20px;
+  color: #005f61;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.course-description-card p {
+  font-size: 18px;
+  color: #034748;
+  margin-bottom: 10px;
+}
+
+.common-btn {
+  text-decoration: none;
+  background-color: #007a7c;
+  color: #ffffff;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.common-btn:hover {
+  background-color: #005f61;
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
