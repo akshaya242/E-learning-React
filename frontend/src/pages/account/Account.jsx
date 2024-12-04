@@ -63,7 +63,7 @@ const Account = ({ user }) => {
             <br />
             {/* Display Apply to Become a Teacher button only for users without a designation */}
             {user.designation=== 'user' && user.role==="user" && (
-              <div>
+               <div className="teacher-apply">
                 <p>Become a teacher on our platform.</p>
                 <button onClick={applyToBecomeTeacher} className="common-btn">
                   Apply to Become a Teacher
@@ -82,18 +82,17 @@ const Account = ({ user }) => {
             )}
             {user.role === "teacher" && (
               <button
-                onClick={() => navigate(`/admin/dashboard`)}
+                onClick={() => navigate(`/teacher/${user._id}/dashboardd`)}
                 className="common-btn"
               >
                 <MdDashboard />
-                Admin Dashboard
+                Teacher Dashboard
               </button>
             )}
             <br />
             <button
               onClick={logoutHandler}
               className="common-btn"
-              style={{ background: "red" }}
             >
               <IoMdLogOut />
               Logout

@@ -8,18 +8,19 @@ import toast from "react-hot-toast";
 
 const AdminUsers = ({ user }) => {
   const navigate = useNavigate();
-  
-  const [users, setUsers] = useState([]);
-  const [selectedRoles, setSelectedRoles] = useState({}); // Store selected role per user
+
+  const [users, setUsers] = useState([]); // State for user list
+  const [selectedRoles, setSelectedRoles] = useState({}); // State for role changes
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  if (user && user.mainrole !== "superadmin") return navigate("/");
+  // Redirect if the current user is not a superadmin
+  if (user?.mainrole !== "superadmin") return navigate("/");
 
-  // Fetch users function
-  async function fetchUsers() {
+  // Fetch all users
+  const fetchUsers = async () => {
     try {
       const { data } = await axios.get(`${server}/api/users`, {
         headers: {
@@ -27,21 +28,24 @@ const AdminUsers = ({ user }) => {
         },
       });
 
+      console.log(data.users); // Debug: Check users in API response
       setUsers(data.users);
-      // Initialize selectedRoles state for each user
+
+      // Initialize role state
       const initialRoles = data.users.reduce((acc, user) => {
-        acc[user._id] = user.role; // Set the initial role
+        acc[user._id] = user.role || "user"; // Fallback to "user" if role is undefined
         return acc;
       }, {});
       setSelectedRoles(initialRoles);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("Failed to fetch users.");
     }
-  }
+  };
 
-  // Update the user's role
+  // Update user role
   const updateRole = async (id) => {
-    const newRole = selectedRoles[id]; // Get the selected role for this user
+    const newRole = selectedRoles[id];
     try {
       const { data } = await axios.put(
         `${server}/api/user/${id}`,
@@ -52,18 +56,33 @@ const AdminUsers = ({ user }) => {
           },
         }
       );
-
       toast.success(data.message);
-      fetchUsers(); // Refresh the user list after the role update
+      fetchUsers(); // Refresh users list
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to update role.");
     }
   };
 
+  // Delete user
+  const deleteUser = async (id) => {
+    try {
+      const { data } = await axios.delete(`${server}/api/user/${id}`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      });
+      toast.success(data.message);
+      fetchUsers(); // Refresh users list
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete user.");
+    }
+  };
+
+  // Handle role change in dropdown
   const handleRoleChange = (id, role) => {
     setSelectedRoles((prev) => ({
       ...prev,
-      [id]: role, // Update the role for the specific user
+      [id]: role,
     }));
   };
 
@@ -71,56 +90,72 @@ const AdminUsers = ({ user }) => {
     <Layout>
       <div className="users">
         <h1>All Users</h1>
-        <table border={"black"}>
+        <table border="black">
           <thead>
             <tr>
               <td>Sr.No</td>
               <td>Name</td>
               <td>Email</td>
               <td>Role</td>
-              <td>Update role</td>
-              <td>Requesting access for</td>
+              <td>Update Role</td>
+              <td>Requesting Access For</td>
+              <td>Actions</td>
             </tr>
           </thead>
-          {users &&
-            users.map((e, i) => (
-              <tbody key={e._id}>
-                <tr>
+          <tbody>
+            {users.length > 0 ? (
+              users.map((e, i) => (
+                <tr key={e?._id}>
                   <td>{i + 1}</td>
-                  <td>{e.name}</td>
-                  <td>{e.email}</td>
+                  <td>{e?.name || "No Name"}</td>
+                  <td>{e?.email || "No Email"}</td>
                   <td>
-                    {e.role === "user"
+                    {e?.role === "user"
                       ? "User"
-                      : e.role === "admin"
+                      : e?.role === "admin"
                       ? "Admin"
-                      : e.role === "teacher"
+                      : e?.role === "teacher"
                       ? "Teacher"
-                      : ""}
+                      : "Unknown"}
                   </td>
                   <td>
-                    {/* Select dropdown to change role */}
                     <select
-                      value={selectedRoles[e._id] || e.role} // Default to current role
-                      onChange={(event) => handleRoleChange(e._id, event.target.value)}
+                      value={selectedRoles[e?._id] || e?.role || "user"}
+                      onChange={(event) =>
+                        handleRoleChange(e._id, event.target.value)
+                      }
                     >
                       <option value="user">User</option>
                       <option value="admin">Admin</option>
                       <option value="teacher">Teacher</option>
                     </select>
                     <button
-                      onClick={() => updateRole(e._id)} // Update role based on selected value
+                      onClick={() => updateRole(e?._id)}
                       className="common-btn"
                     >
                       Update Role
                     </button>
                   </td>
-
-                  <td>{e.role !== "admin" && e.designation}</td>
+                  <td>{e?.role !== "admin" && e?.designation}</td>
+                  <td>
+                    {e?.role !== "admin" && (
+                      <button
+                        onClick={() => deleteUser(e?._id)}
+                        className="common-btn delete-btn"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </td>
 
                 </tr>
-              </tbody>
-            ))}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7">No users found.</td>
+              </tr>
+            )}
+          </tbody>
         </table>
       </div>
     </Layout>
