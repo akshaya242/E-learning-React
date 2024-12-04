@@ -30,8 +30,8 @@ const Lecture = ({ user }) => {
     fetchProgress();
   }, []);
 
-  if (user && user.role !== "admin" && !user.subscription.includes(params.id))
-    return navigate("/");
+  // if (user && user.role !== "admin" && !user.subscription.includes(params.id))
+  //   return navigate("/");
 
   async function fetchLectures() {
     try {
@@ -40,10 +40,11 @@ const Lecture = ({ user }) => {
           token: localStorage.getItem("token"),
         },
       });
+      console.log("Fetched Lectures:", data);
       setLectures(data.lectures);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching lectures:", error);
       setLoading(false);
     }
   }
@@ -208,11 +209,12 @@ const Lecture = ({ user }) => {
               )}
             </div>
             <div className="right">
-              {user && user.role === "admin" && (
-                <button className="common-btn" onClick={() => setShow(!show)}>
-                  {show ? "Close" : "Add Lecture +"}
-                </button>
-              )}
+            {user && (user.role === "admin" || user.role === "teacher") && (
+              <button className="common-btn" onClick={() => setShow(!show)}>
+                {show ? "Close" : "Add Lecture +"}
+              </button>
+            )}
+
 
               {show && (
                 <div className="lecture-form">
@@ -286,7 +288,7 @@ const Lecture = ({ user }) => {
                           </span>
                         )}
                     </div>
-                    {user && user.role === "admin" && (
+                    {user && (user.role === "admin" || user.role === "teacher") && (
                       <button
                         className="common-btn"
                         style={{ background: "red" }}
@@ -295,6 +297,7 @@ const Lecture = ({ user }) => {
                         Delete {e.title}
                       </button>
                     )}
+
                   </>
                 ))
               ) : (

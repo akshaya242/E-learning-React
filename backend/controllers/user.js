@@ -183,7 +183,7 @@ export const teachersCourses = TryCatch(async (req, res) => {
     }
 
     // Fetch courses created by this teacher using the teacher's ID
-    const courses = await Courses.find({ createdBy: teacher.name });
+    const courses = await Courses.find({ owner: teacherId });
     // console.log(courses)
     if (courses.length === 0) {
         return res.status(404).json({
