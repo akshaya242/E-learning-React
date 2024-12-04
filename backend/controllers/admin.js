@@ -8,7 +8,7 @@ import { User } from "../models/user.js";
 
 export const createCourse = TryCatch(async (req, res) => {
     const {title,description,category ,createdBy,duration ,price} = req.body;
-
+    const userId = req.user._id;
     const image = req.file;
     await Courses.create(
         {
@@ -19,6 +19,7 @@ export const createCourse = TryCatch(async (req, res) => {
             image: image?.path,
             duration,
             price,
+            owner: userId,
         });
     res.status(201).json({
         message: "Course created successfully",

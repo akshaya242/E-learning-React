@@ -1,6 +1,6 @@
 import express from 'express'
 import { getAllCourses, getSingleCourse ,fetchLectures,fetchlecutre, getMycourses, checkout, paymentVerification, generateCourseReport} from '../controllers/course.js';
-import {isAuth, isTeacher} from  '../middlewares/isAuth.js'
+import {isAuth, isTeacher,isAdminOrTeacher} from  '../middlewares/isAuth.js'
 
 const router = express.Router();
 

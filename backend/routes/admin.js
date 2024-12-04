@@ -1,13 +1,13 @@
 import express from 'express'
-import { isAdmin, isAuth } from '../middlewares/isAuth.js';
+import { isAdmin, isAuth ,isAdminOrTeacher} from '../middlewares/isAuth.js';
 import { addLectures, createCourse, deleteCourse, deleteLecture, getAllstats, updateRole, getAllUser, deleteUser } from '../controllers/admin.js';
 import { uploadFiles } from '../middlewares/multer.js'
 import { User } from '../models/user.js';
 const router = express.Router();
 
-router.post("/course/new",isAuth,isAdmin,uploadFiles,createCourse);
-router.post("/course/:id", isAuth, isAdmin, uploadFiles, addLectures);
-router.delete("/lecture/:id", isAuth, isAdmin, deleteLecture);
+router.post("/course/new",isAuth,isAdminOrTeacher,uploadFiles,createCourse);
+router.post("/course/:id", isAuth, isAdminOrTeacher, uploadFiles, addLectures);
+router.delete("/lecture/:id", isAuth, isAdminOrTeacher, deleteLecture);
 
 router.delete("/course/:id", isAuth, isAdmin, deleteCourse);
 router.get("/stats",isAuth,isAdmin,getAllstats);
