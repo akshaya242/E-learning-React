@@ -2,7 +2,7 @@ import express from 'express';
 import { loginUser, myProfile, register, verifyUser } from '../controllers/user.js';
 import { isAuth, isTeacher } from '../middlewares/isAuth.js';
 import { addProgress, getYourProgress } from '../controllers/course.js';
-import { getAllTeachers } from '../controllers/user.js';
+import { getAllTeachers, teachersCourses, deleteCourse } from '../controllers/user.js';
 import { teacherDashboard } from '../controllers/user.js';
 import { User } from "../models/user.js";
 const router = express.Router();
@@ -15,7 +15,10 @@ router.get("/user/me",isAuth,myProfile);
 router.post("/user/progress",isAuth,addProgress);
 router.get("/user/progress",isAuth,getYourProgress);
 router.get("/user/teachers", getAllTeachers); 
-router.get("/teacher/dashboard", isAuth, isTeacher,teacherDashboard);
+router.get("/teacher/:id/dashboard", isAuth, isTeacher, teacherDashboard);
+router.get("/teacher/:id/courses", isAuth, isTeacher, teachersCourses);
+router.delete("/teacher/course/:id", isAuth, isTeacher, deleteCourse);
+
 router.patch("/users/:userId", async (req, res) => {
     try {
       const { userId } = req.params;

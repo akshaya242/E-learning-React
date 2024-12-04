@@ -3,6 +3,9 @@ import bcrypt from 'bcrypt';  // ES module style
 import jwt from 'jsonwebtoken';  // ES module style
 import sendMail from "../middlewares/sendMail.js";
 import TryCatch from "../middlewares/TryCatch.js";
+import { Courses } from "../models/Courses.js";
+import { Progress } from "../models/Progress.js";
+import { Lecture } from "../models/Lecture.js";
 
 
 export const register = async (req,res) => {
@@ -42,7 +45,7 @@ export const register = async (req,res) => {
             "E Learning Platform",
             data
         )
-        console.log(data);
+        // console.log(data);
         res.status(200).json({
             messsage : "otp send to your email",
             activationToken,
@@ -127,26 +130,119 @@ export const getAllTeachers = TryCatch(async (req, res) => {
   });
 
   export const teacherDashboard = TryCatch(async (req, res) => {
-    const teacherId = req.user.id; // Assuming authentication middleware adds `user` to `req`
-  
-    const courses = await Courses.find({ createdBy: teacherId });
-  
+    const teacherId = req.params.id; // Get the teacher's ID from the route parameter
+    
+    // Fetch the teacher's name using the ID
+    const teacher = await User.findById(teacherId); // Assuming `Teachers` is the collection for teachers
+    // console.log(teacher)
+    if (!teacher) {
+        return res.status(404).json({
+            success: false,
+            message: "Teacher not found",
+        });
+    }
+
+    const teacherName = teacher.name; // Extract the name of the teacher
+    
+
+    // Fetch courses created by the teacher's name
+    const courses = await Courses.find({ createdBy: teacherName });
+   
+
     let totalStudents = 0;
     let totalRevenue = 0;
-  
+
     for (const course of courses) {
-      const studentsEnrolled = await Progress.find({ course: course._id }).countDocuments();
-      totalStudents += studentsEnrolled;
-      totalRevenue += studentsEnrolled * course.price;
+        const studentsEnrolled = await Progress.find({ course: course._id }).countDocuments();
+        totalStudents += studentsEnrolled;
+        totalRevenue += studentsEnrolled * course.price;
+    }
+    
+
+    res.json({
+        success: true,
+        data: {
+            totalCourses: courses.length,
+            totalStudents,
+            totalRevenue,
+            courses,
+        },
+    });
+});
+
+export const teachersCourses = TryCatch(async (req, res) => {
+    const teacherId = req.params.id; // Get the teacher's ID from the route parameter
+
+    // Fetch the teacher's details using the ID
+    const teacher = await User.findById(teacherId);
+    if (!teacher) {
+        return res.status(404).json({
+            success: false,
+            message: "Teacher not found",
+        });
+    }
+
+    // Fetch courses created by this teacher using the teacher's ID
+    const courses = await Courses.find({ createdBy: teacher.name });
+    // console.log(courses)
+    if (courses.length === 0) {
+        return res.status(404).json({
+            success: false,
+            message: "No courses found for this teacher",
+        });
+    }
+
+    // Send the courses data back to the frontend
+    res.json({
+        success: true,
+        data: courses, // Just send the course data without student progress
+    });
+});
+
+export const deleteCourse = TryCatch(async (req, res) => {
+    // Find the course by ID
+    const course = await Courses.findById(req.params.id);
+    console.log(course)
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
     }
   
+    // Find associated lectures
+    const lectures = await Lecture.find({ course: course._id });
+  
+    // Delete all video files associated with lectures
+    await Promise.all(
+      lectures.map(async (lecture) => {
+        try {
+          await unlinkAsync(lecture.video);
+          console.log("Video deleted:", lecture.video);
+        } catch (error) {
+          console.error("Error deleting video:", error.message);
+        }
+      })
+    );
+  
+    // Delete course image
+    try {
+      rm(course.image, () => {
+        console.log("Image deleted:", course.image);
+      });
+    } catch (error) {
+      console.error("Error deleting image:", error.message);
+    }
+  
+    // Delete lectures associated with the course
+    await Lecture.deleteMany({ course: req.params.id });
+  
+    // Delete the course itself
+    await course.deleteOne();
+  
+    // Update users by removing the course from their subscriptions
+    await User.updateMany({}, { $pull: { subscription: req.params.id } });
+  
+    // Send success response
     res.json({
-      success: true,
-      data: {
-        totalCourses: courses.length,
-        totalStudents,
-        totalRevenue,
-        courses,
-      },
+      message: "Course deleted successfully",
     });
   });
+  

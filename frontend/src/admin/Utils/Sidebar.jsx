@@ -7,11 +7,15 @@ import { UserData } from "../../context/UserContext";
 
 const Sidebar = () => {
   const { user } = UserData();
+
+  const basePath = user?.role === "teacher" ? `/teacher/${user._id}` : "/admin";
+
   return (
     <div className="sidebar">
       <ul>
+        {/* Home Link */}
         <li>
-          <Link to={"/admin/dashboard"}>
+          <Link to={`${basePath}/dashboard`}>
             <div className="icon">
               <AiFillHome />
             </div>
@@ -19,8 +23,9 @@ const Sidebar = () => {
           </Link>
         </li>
 
+        {/* Courses Link */}
         <li>
-          <Link to={"/admin/course"}>
+          <Link to={`${basePath}/course`}>
             <div className="icon">
               <FaBook />
             </div>
@@ -28,27 +33,39 @@ const Sidebar = () => {
           </Link>
         </li>
 
-        
+        {/* Add Course Link (Visible only for Teacher) */}
+        {user?.role === "teacher" && (
           <li>
-            <Link to={"/admin/users"}>
+            <Link to={`${basePath}/add-course`}>
+              <div className="icon">
+                <FaBook />
+              </div>
+              <span>Add Course</span>
+            </Link>
+          </li>
+        )}
+
+        {/* Users Link (Visible only for Admin) */}
+        {user?.role === "admin" && (
+          <li>
+            <Link to="/admin/users">
               <div className="icon">
                 <FaUserAlt />
               </div>
               <span>Users</span>
             </Link>
           </li>
-        
-      {
-        user && user.role === "admin" && (
-          <li>
-          <Link to={"/account"}>
+        )}
+
+        {/* Logout Link */}
+        <li>
+          <Link to="/account">
             <div className="icon">
               <AiOutlineLogout />
             </div>
             <span>Logout</span>
           </Link>
-        </li>)}
-        
+        </li>
       </ul>
     </div>
   );
