@@ -17,7 +17,7 @@ const CoursesHome = () => {
           courses.slice(0, 3).map((e) => <CourseCard key={e._id} course={e} />)
           
         ) : (
-          <p>No Courses Yet!</p>
+          <p className="no-courses">No Courses Yet!</p>
         )}
       </div>
       <Link to="/courses">
