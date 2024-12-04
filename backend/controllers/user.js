@@ -133,7 +133,7 @@ export const getAllTeachers = TryCatch(async (req, res) => {
     const teacherId = req.params.id; // Get the teacher's ID from the route parameter
     
     // Fetch the teacher's name using the ID
-    const teacher = await User.findById(teacherId); // Assuming `Teachers` is the collection for teachers
+    const teacher = await User.findById(teacherId); 
     // console.log(teacher)
     if (!teacher) {
         return res.status(404).json({
@@ -141,10 +141,11 @@ export const getAllTeachers = TryCatch(async (req, res) => {
             message: "Teacher not found",
         });
     }
+    console.log(teacher)
 
     const teacherName = teacher.name; // Extract the name of the teacher
     
-
+    console.log(teacherName)
     // Fetch courses created by the teacher's name
     const courses = await Courses.find({ createdBy: teacherName });
    
@@ -183,7 +184,7 @@ export const teachersCourses = TryCatch(async (req, res) => {
     }
 
     // Fetch courses created by this teacher using the teacher's ID
-    const courses = await Courses.find({ owner: teacherId });
+    const courses = await Courses.find({ createdBy: teacher.name });
     // console.log(courses)
     if (courses.length === 0) {
         return res.status(404).json({

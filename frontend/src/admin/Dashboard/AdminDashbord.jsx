@@ -117,15 +117,15 @@ const AdminDashbord = ({ user }) => {
       <Layout>
         <div className="main-content">
           <div className="dashboard">
-            <div className="card">
+            <div className="card-dashboard">
               <h2 className="h2">Total Courses</h2>
               <p>{stats.totalcourses}</p>
             </div>
-            <div className="card">
+            <div className="card-dashboard">
               <h2 className="h2">Total Lectures</h2>
               <p>{stats.totalLectures}</p>
             </div>
-            <div className="card">
+            <div className="card-dashboard">
               <h2 className="h2">Total Users</h2>
               <p>{stats.totalUser}</p>
             </div>

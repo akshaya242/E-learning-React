@@ -65,7 +65,7 @@ const CourseDescription = ({ user }) => {
               }
             );
   
-            await fetchUser();
+            // await fetchUser();
             await fetchCourses();
             await fetchMyCourse();
             toast.success(data.message);

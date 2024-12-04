@@ -65,7 +65,7 @@ const TeacherCourses = () => {
       setShowReport(true); // Show the Report component
     } catch (error) {
       console.error("Error generating report:", error.message);
-    }
+    } 
   };
 
   const handleDelete = async (courseId) => {
@@ -183,11 +183,9 @@ const TeacherCourses = () => {
                       onClick={() => navigate(`/course/study/${course._id}`)}
                       className="btn update-btn"
                     >
-                      Edit
+                      Add Lecture
                     </button>
-                    <button onClick={() => handleUpdate(course._id)} className="btn update-btn">
-                      Update Course Details
-                    </button>
+                    
                     <button onClick={() => handleReport(course._id)} className="btn report-btn">
                       Report
                     </button>

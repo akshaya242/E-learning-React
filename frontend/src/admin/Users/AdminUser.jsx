@@ -11,14 +11,6 @@ const AdminUsers = ({ user }) => {
 
   const [users, setUsers] = useState([]); // State for user list
   const [selectedRoles, setSelectedRoles] = useState({}); // State for role changes
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  // Redirect if the current user is not a superadmin
-  if (user?.mainrole !== "superadmin") return navigate("/");
-
   // Fetch all users
   const fetchUsers = async () => {
     try {
@@ -42,6 +34,15 @@ const AdminUsers = ({ user }) => {
       toast.error("Failed to fetch users.");
     }
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  // Redirect if the current user is not a superadmin
+  if (user?.mainrole !== "superadmin") return navigate("/");
+
+  
 
   // Update user role
   const updateRole = async (id) => {

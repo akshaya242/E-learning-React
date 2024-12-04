@@ -33,18 +33,6 @@ const Sidebar = () => {
           </Link>
         </li>
 
-        {/* Add Course Link (Visible only for Teacher) */}
-        {user?.role === "teacher" && (
-          <li>
-            <Link to={`${basePath}/add-course`}>
-              <div className="icon">
-                <FaBook />
-              </div>
-              <span>Add Course</span>
-            </Link>
-          </li>
-        )}
-
         {/* Users Link (Visible only for Admin) */}
         {user?.role === "admin" && (
           <li>

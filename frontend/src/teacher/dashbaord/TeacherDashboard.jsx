@@ -19,19 +19,19 @@ const TeacherDashboard = () => {
   return (
     <div>
       <Layout>
-        <div className="main-content">
+      <div className="main-content">
           <div className="dashboard">
             {teacherDashboardData ? (
               <>
-                <div className="card">
+                <div className="card-dashboard">
                   <h2 className="h2">Total Courses</h2>
                   <p>{teacherDashboardData.totalCourses}</p>
                 </div>
-                <div className="card">
+                <div className="card-dashboard">
                   <h2 className="h2">Total revenue</h2>
                   <p>{teacherDashboardData.totalRevenue}</p>
                 </div>
-                <div className="card">
+                <div className="card-dashboard">
                   <h2 className="h2">Enrolled Students</h2>
                   <p>{teacherDashboardData.totalStudents}</p>
                 </div>
@@ -41,6 +41,7 @@ const TeacherDashboard = () => {
             )}
           </div>
         </div>
+        
       </Layout>
     </div>
   );
