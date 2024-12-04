@@ -1,6 +1,6 @@
-// import React from "react";
-// import "./Faq.css"; // Add a CSS file for styling if needed
-// import Faq from "react-faq-component";
+import React from "react";
+import "./Faq.css"; // Add a CSS file for styling if needed
+import Faq from "react-faq-component";
 
 const FaqSection = () => {
   const data = {
@@ -43,21 +43,21 @@ const FaqSection = () => {
     ],
   };
 
-//   const styles = {
-//     titleTextColor: "#007791",
-//     rowTitleColor: "#007791",
-//   };
+  const styles = {
+    titleTextColor: "#007791",
+    rowTitleColor: "#007791",
+  };
 
-//   const config = {};
+  const config = {};
 
-//   return (
-//     <div className="faq-section">
-//       <div className="faq-content">
-//         <h2>Frequently Asked Questions</h2>
-//         <Faq data={data} styles={styles} config={config} />
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <div className="faq-section">
+      <div className="faq-content">
+        <h2>Frequently Asked Questions</h2>
+        <Faq data={data} styles={styles} config={config} />
+      </div>
+    </div>
+  );
+};
 
-// export default FaqSection;
+export default FaqSection;
