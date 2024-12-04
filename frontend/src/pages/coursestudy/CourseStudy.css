@@ -1,101 +1,95 @@
+/* Specific styles for CourseStudy page */
 .course-study-page {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  background-color: #023436; /* Contrasting deep teal background */
+  justify-content: center;
+  background-color: #012a2e; /* Dark teal for background */
+  padding: 100px 20px;
   min-height: 80vh;
-  padding: 20px;
 }
 
 .course-card {
-  margin-top: 110px; /* Add 110px margin at the top */
-  background-color: #ffffff; /* White card background */
+  background-color: #f9f9f9; /* Light gray card for better contrast */
+  border-radius: 15px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  padding: 30px;
   width: 90%;
   max-width: 600px;
-  border-radius: 20px;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Elevated shadow */
-  padding: 30px;
   text-align: center;
-  animation: slideIn 0.8s ease-out; /* Card animation */
   position: relative;
-  overflow: hidden;
-}
-
-.course-card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 191, 191, 0.1), rgba(0, 191, 191, 0.3));
-  transform: rotate(45deg);
-  z-index: 0;
-  animation: glowPulse 5s infinite;
+  opacity: 0;
+  transform: scale(0.9);
+  animation: popIn 0.8s ease-out forwards;
 }
 
 .course-card img {
-  border-radius: 15px;
   width: 100%;
   max-width: 350px;
-  margin: 0 auto 20px;
+  margin-bottom: 20px;
+  border-radius: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .course-card h2 {
   font-size: 28px;
-  color: #003f40; /* Deep cyan */
+  color: #005f61; /* Deep teal for headings */
   font-weight: 700;
   margin-bottom: 15px;
-  position: relative;
-  z-index: 1;
 }
 
 .course-card h4 {
   font-size: 20px;
-  color: #055a5b; /* Dark cyan */
+  color: #007a7c; /* Medium teal for subheadings */
   margin-bottom: 10px;
-  line-height: 1.5;
-  position: relative;
-  z-index: 1;
 }
 
 .course-card h5 {
   font-size: 18px;
-  color: #003f40; /* Deep cyan */
+  color: #034748; /* Dark teal for italic text */
   font-style: italic;
   margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
 }
 
 .course-card a {
   text-decoration: none;
-  background-color: #055a5b; /* Dark cyan button */
-  color: #ffffff;
-  padding: 10px 25px;
+  background-color: #007a7c; /* Medium teal for buttons */
+  color: #ffffff; /* White text for buttons */
+  padding: 12px 30px;
   border-radius: 25px;
   font-size: 18px;
   font-weight: bold;
   display: inline-block;
   margin-top: 20px;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-  z-index: 1;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: popInButton 0.8s ease-out forwards;
 }
 
 .course-card a:hover {
-  background-color: #003f40;
+  background-color: #005f61; /* Deep teal for hover state */
   transform: translateY(-5px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Animation keyframes */
-@keyframes slideIn {
+/* Pop-in animation for the course card */
+@keyframes popIn {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Pop-in animation for the button */
+@keyframes popInButton {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -103,16 +97,7 @@
   }
 }
 
-@keyframes glowPulse {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-/* Responsive Design */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .course-card {
     padding: 20px;
@@ -132,6 +117,6 @@
 
   .course-card a {
     font-size: 16px;
-    padding: 8px 20px;
+    padding: 10px 25px;
   }
 }

@@ -6,13 +6,12 @@ import { server } from "../../index";
 
 const CourseStudy = ({ user }) => {
   const params = useParams();
-
   const { fetchCourse, course } = CourseData();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchCourse(params.id);
-  }, []);
+  }, [params.id]);
 
   // Conditional Access Logic
   if (user) {
@@ -29,19 +28,20 @@ const CourseStudy = ({ user }) => {
 
   return (
     <>
-      <div className="course-study-page">
-  {course && (
-    <div className="course-card">
-      <img src={`${server}/${course.image}`} alt={course.title} />
-      <h2>{course.title}</h2>
-      <h4>{course.description}</h4>
-      <h5>by - {course.createdBy}</h5>
-      <h5>Duration - {course.duration} weeks</h5>
-      <Link to={`/lectures/${course._id}`}>View Lectures</Link>
-    </div>
-  )}
-</div>
-
+      {course && (
+        <div className="course-study-page">
+          <div className="course-card">
+            <img src={`${server}/${course.image}`} alt="Course Image" />
+            <h2>{course.title}</h2>
+            <h4>{course.description}</h4>
+            <h5>by - {course.createdBy}</h5>
+            <h5>Duration - {course.duration} weeks</h5>
+            <Link to={`/lectures/${course._id}`}>
+              View Lectures
+            </Link>
+          </div>
+        </div>
+      )}
     </>
   );
 };
