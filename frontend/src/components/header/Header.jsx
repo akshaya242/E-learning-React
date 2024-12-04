@@ -8,7 +8,7 @@ const Header = ({isAuth}) => {
       <nav>
         <div className="logo-container">
           <Link to="/">
-            <img src="images/logo2.svg" alt="QuikLearn Logo" id="logo" />
+            <img src="../../../logo2.svg" alt="QuikLearn Logo" id="logo" />
           </Link>
         </div>
         <i className="fas fa-bars" id="ham-menu"></i>
