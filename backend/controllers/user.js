@@ -45,7 +45,7 @@ export const register = async (req,res) => {
             "E Learning Platform",
             data
         )
-        // console.log(data);
+        console.log(data);
         res.status(200).json({
             messsage : "otp send to your email",
             activationToken,
