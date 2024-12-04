@@ -34,7 +34,7 @@ router.post("/unenroll", async (req, res) => {
     }
 
     // Remove the course from user's subscription
-    user.subscription = user.subscription.filter(id => id !== courseId);
+    user.subscription = user.subscription.filter(id => !id.equals(courseId));
     await user.save();
 
     res.status(200).json({ message: "Unenrolled successfully" });
