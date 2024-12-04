@@ -8,29 +8,40 @@ const CourseStudy = ({ user }) => {
   const params = useParams();
 
   const { fetchCourse, course } = CourseData();
-  console.log(course)
   const navigate = useNavigate();
+
   useEffect(() => {
     fetchCourse(params.id);
   }, []);
-  if (user && user.role !== "admin" && !user.subscription.includes(params.id))
-    return navigate("/");
 
- 
+  // Conditional Access Logic
+  if (user) {
+    const isAdmin = user.role === "admin";
+    const isTeacher = user.role === "teacher";
+    const hasSubscription = user.subscription?.includes(params.id);
+
+    if (!isAdmin && !isTeacher && !hasSubscription) {
+      return navigate("/");
+    }
+  } else {
+    return navigate("/login"); // Redirect unauthenticated users to login
+  }
+
   return (
     <>
-      {course && (
-        <div className="course-study-page">
-          <img src={`${server}/${course.image}`} alt="" width={350} />
-          <h2>{course.title}</h2>
-          <h4>{course.description}</h4>
-          <h5>by - {course.createdBy}</h5>
-          <h5>Duration - {course.duration} weeks</h5>
-          <Link to={`/lectures/${course._id}`}>
-            <h2>Lectures</h2>
-          </Link>
-        </div>
-      )}
+      <div className="course-study-page">
+  {course && (
+    <div className="course-card">
+      <img src={`${server}/${course.image}`} alt={course.title} />
+      <h2>{course.title}</h2>
+      <h4>{course.description}</h4>
+      <h5>by - {course.createdBy}</h5>
+      <h5>Duration - {course.duration} weeks</h5>
+      <Link to={`/lectures/${course._id}`}>View Lectures</Link>
+    </div>
+  )}
+</div>
+
     </>
   );
 };

@@ -29,7 +29,7 @@ export const getSingleCourse = TryCatch (async(req,res)=>{
 export const fetchLectures = TryCatch (async(req,res)=>{
     const lectures = await Lecture.find({course: req.params.id});
     const user = await User.findById(req.user._id);
-    if(user.role == "admin"){
+    if(user.role == "admin" || user.role == "teacher"){
         return res.json({
             lectures
         })
