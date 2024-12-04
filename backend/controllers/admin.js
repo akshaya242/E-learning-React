@@ -117,11 +117,39 @@ export const getAllstats = TryCatch (async (req,res) => {
     const totalcourses = (await Courses.find()).length;
     const totalLectures = (await Lecture.find()).length;
     const totalUser = (await User.find()).length;
-    
+    const userDistribution = await User.aggregate([
+      {
+        $group: {
+          _id: "$role", // Group by the 'role' field
+          count: { $sum: 1 }, // Count the number of users for each role
+        },
+      },
+    ]);
+
+    const courseRegistrationStats = await Courses.aggregate([
+      {
+        $lookup: {
+          from: "users", // Collection name for the User model
+          localField: "_id", // Match Courses `_id` with `subscription` in User
+          foreignField: "subscription", // User's `subscription` array
+          as: "subscribers", // Resulting array of users who subscribed
+        },
+      },
+      {
+        $project: {
+          title: 1, // Include course title
+          registrationCount: { $size: "$subscribers" }, // Count the number of subscribers
+        },
+      },
+    ]);
+ 
+
     const stats ={
         totalcourses ,
         totalLectures ,
         totalUser ,
+        userDistribution,
+        courseRegistrationStats,
     };
     res.json(
         {
@@ -159,13 +187,23 @@ export const getAllUser = TryCatch(async (req, res) => {
 
   export const deleteUser = async (req, res) => {
     try {
-      const user = await User.findById(req.params.id);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      await user.deleteOne();
-      res.status(200).json({ message: "User deleted successfully" });
+      const { userId } = req.params; // Assuming the user ID is passed as a route parameter
+
+        // Find and delete the user
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully",
+            data: deletedUser,
+        });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
