@@ -18,7 +18,7 @@ const TeachersHome = () => {
       <h2 style={{color: 'white'}} className='h2-teachers-home'>All Teachers</h2>
       <div className="teachers-cards">
         {teachers.length > 0 ? (
-          teachers.map((teacher) => (
+          teachers.slice(0,3).map((teacher) => (
             <div className="teacher-card" key={teacher._id}>
               <div className="teacher-card-header">
                 <h3>{teacher.name}</h3>
@@ -37,7 +37,7 @@ const TeachersHome = () => {
         )}
       </div>
       <Link to="/teachers">
-      <button className="common-btn" style={{ marginTop: '2%', marginLeft: '55%' }}>
+      <button className="common-btn" style={{ marginTop: '2%', marginLeft: '85%' }}>
         View All Teachers
       </button>
     </Link>

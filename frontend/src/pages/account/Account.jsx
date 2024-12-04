@@ -53,12 +53,15 @@ const Account = ({ user }) => {
             </p>
 
             <button
-              onClick={() => navigate(`/${user._id}/dashboard`)}
-              className="common-btn"
-            >
-              <MdDashboard />
-              Dashboard
-            </button>
+  onClick={() =>
+    navigate(`/${user._id}/dashboard`)
+  }
+  className="common-btn"
+>
+  <MdDashboard />
+  Dashboard
+</button>
+
 
             <br />
             {/* Display Apply to Become a Teacher button only for users without a designation */}
