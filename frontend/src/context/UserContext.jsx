@@ -13,6 +13,7 @@ export const UserContextProvider = ({children})=>{
 
     const [teachers, setTeachers] = useState([]);
     const [teacherDashboardData, setTeacherDashboardData] = useState(null);
+    const [teacherCourses, setTeacherCourses] = useState([]);
 
     async function loginUser(email, password, navigate, fetchMyCourse) {
         setBtnLoading(true)
@@ -107,20 +108,36 @@ export const UserContextProvider = ({children})=>{
 
   async function fetchTeacherDashboard() {
     try {
-        const { data } = await axios.get(`${server}/api/user/teacher/dashboard`, {
+      console.log(user)
+        const { data } = await axios.get(`${server}/api/teacher/${user._id}/dashboard`, {
             headers: { token: localStorage.getItem("token") },
         });
         setTeacherDashboardData(data.data); // Store fetched dashboard data
     } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.response?.data?.message || "Failed to fetch dashboard data");
     }
 }
+
+const fetchTeacherCourses = async () => {
+  setLoading(true);
+  try {
+      const { data } = await axios.get(`/api/teacher/${user._id}/courses`, {
+          headers: { token: localStorage.getItem("token") }
+      });
+      setTeacherCourses(data.data); // Store courses data
+  } catch (error) {
+      console.error("Error fetching teacher courses:", error);
+  } finally {
+      setLoading(false);
+  }
+};
+
 
     useEffect(()=>{
         fetchUser();
         fetchTeachers()
     }, [])
-    return <userContext.Provider value={{ user, setUser, isAuth, setIsAuth,loginUser, btnLoading, loading, registerUser, verifyOtp, teachers,fetchTeacherDashboard, teacherDashboardData, }}>
+    return <userContext.Provider value={{ user, setUser, isAuth, setIsAuth,loginUser, btnLoading, loading, registerUser, verifyOtp, teachers,fetchTeachers,fetchTeacherDashboard, teacherDashboardData,teacherCourses, fetchTeacherCourses}}>
         {children}
         <Toaster />
         </userContext.Provider>

@@ -23,6 +23,10 @@ import AdminCourses from './admin/Courses/AdminCourses'
 import AdminUsers from './admin/Users/AdminUser'
 import FaqSection from './pages/faq/Faq'
 import Teacher from './pages/teachers/Teachers'
+import TeacherDashboard from './teacher/dashbaord/TeacherDashboard'
+import TeacherCourses from './teacher/courses/TeacherCourses'
+import AddCourse from './components/addcourse/AddCourse'
+
 
 const App = () => {
   const {isAuth, user, loading} = UserData()
@@ -46,8 +50,11 @@ const App = () => {
           <Route path='/course/study/:id' element={isAuth?<CourseStudy user = {user} /> : <Login />} />
           <Route path="/lectures/:id" element={isAuth ? <Lecture user={user} /> : <Login />}/>
           <Route path="/admin/dashboard" element={isAuth ? <AdminDashbord user={user} /> : <Login />}/>
+          <Route path="/teacher/:id/dashboard" element={isAuth ?<TeacherDashboard />: <Login />} />
           <Route path="/admin/course" element={isAuth ? <AdminCourses user={user} /> : <Login />}/>
+          <Route path="/teacher/:id/course" element={isAuth ?<TeacherCourses />: <Login />} />
           <Route path="/admin/users" element={isAuth ? <AdminUsers user={user} /> : <Login />} />
+          <Route path="/teacher/:userId/add-course" element={<AddCourse />} />
           
         </Routes>
         <Footer />
