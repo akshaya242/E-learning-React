@@ -85,7 +85,7 @@ const Account = ({ user }) => {
             )}
             {user.role === "teacher" && (
               <button
-                onClick={() => navigate(`/teacher/${user._id}/dashboardd`)}
+                onClick={() => navigate(`/teacher/${user._id}/dashboard`)}
                 className="common-btn"
               >
                 <MdDashboard />
