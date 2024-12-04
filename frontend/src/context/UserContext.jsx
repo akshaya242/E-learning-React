@@ -10,6 +10,10 @@ export const UserContextProvider = ({children})=>{
     const [isAuth, setIsAuth] = useState(false)
     const [btnLoading, setBtnLoading] = useState(false)
     const [loading, setLoading] = useState(true)
+
+    const [teachers, setTeachers] = useState([]);
+    const [teacherDashboardData, setTeacherDashboardData] = useState(null);
+
     async function loginUser(email, password, navigate, fetchMyCourse) {
         setBtnLoading(true)
         try{
@@ -89,10 +93,34 @@ export const UserContextProvider = ({children})=>{
             
         }
     }
+
+    async function fetchTeachers() {
+      try {
+          const { data } = await axios.get(`${server}/api/user/teachers`, {
+              headers: { token: localStorage.getItem("token") }
+          });
+          setTeachers(data.teachers); // Store fetched teachers
+      } catch (error) {
+          toast.error(error.response.data.message);
+      }
+  }
+
+  async function fetchTeacherDashboard() {
+    try {
+        const { data } = await axios.get(`${server}/api/user/teacher/dashboard`, {
+            headers: { token: localStorage.getItem("token") },
+        });
+        setTeacherDashboardData(data.data); // Store fetched dashboard data
+    } catch (error) {
+        toast.error(error.response.data.message);
+    }
+}
+
     useEffect(()=>{
         fetchUser();
+        fetchTeachers()
     }, [])
-    return <userContext.Provider value={{ user, setUser, isAuth, setIsAuth,loginUser, btnLoading, loading, registerUser, verifyOtp }}>
+    return <userContext.Provider value={{ user, setUser, isAuth, setIsAuth,loginUser, btnLoading, loading, registerUser, verifyOtp, teachers,fetchTeacherDashboard, teacherDashboardData, }}>
         {children}
         <Toaster />
         </userContext.Provider>

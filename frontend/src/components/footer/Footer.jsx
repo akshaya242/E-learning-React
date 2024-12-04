@@ -96,7 +96,7 @@ const Footer = () => {
         {/* Div 1 */}
         <div className="left-contlist">
           <a href="/">
-            <img src="frontend\public\logo2.svg" alt="QuikLearn" width="110px" />
+            <img src="images/logo2.svg" alt="QuikLearn" width="110px" />
             
           </a>
           <span
