@@ -3,14 +3,19 @@ import "./Courseshome.css";
 import { CourseData } from "../../context/CourseContext";
 import CourseCard from "../../components/coursecard/CourseCard";
 import { Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
+
 
 const CoursesHome = () => {
   const { courses } = CourseData();
-
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.5, // Adjust threshold as needed
+  });
   console.log(courses);
 
   return (
-    <div className="courses">
+    <div ref={ref} className={`courses-home ${inView ? 'slide-in' : ''}`}>
       <h2>Top Courses</h2>
       <div className="course-container">
         {courses && courses.length > 0 ? (

@@ -32,7 +32,7 @@ const TeacherCourses = () => {
   const [imagePrev, setImagePrev] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
-
+  const [reportLoading, setReportLoading] = useState(false);
   useEffect(() => {
     if (user && user._id) {
       fetchTeacherCourses();
@@ -58,15 +58,25 @@ const TeacherCourses = () => {
     // Implement update course details functionality
   };
 
-  const handleReport = async (courseId) => {
-    try {
-      const response = await axios.get(`${server}/api/courses/${courseId}/report`);
-      setReportData(response.data); // Store the report data
-      setShowReport(true); // Show the Report component
-    } catch (error) {
-      console.error("Error generating report:", error.message);
-    } 
-  };
+ 
+
+const handleReport = async (courseId) => {
+  setReportLoading(true);
+  try {
+    const response = await axios.get(`${server}/api/courses/${courseId}/report`, {
+      headers: { token: localStorage.getItem("token") },
+    });
+    console.log(response);
+    setReportData(response.data);
+    setShowReport(true);
+  } catch (error) {
+    console.error("Error generating report:", error.message);
+    alert("Error generating report. Please try again.");
+  } finally {
+    setReportLoading(false);
+  }
+};
+
 
   const handleDelete = async (courseId) => {
     try {
@@ -185,7 +195,6 @@ const TeacherCourses = () => {
                     >
                       Add Lecture
                     </button>
-                    
                     <button onClick={() => handleReport(course._id)} className="btn report-btn">
                       Report
                     </button>

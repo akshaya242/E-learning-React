@@ -6,6 +6,7 @@ import { instance } from "../index.js";
 import crypto from "crypto";
 import { Payment } from "../models/Payment.js";
 import {Progress} from "../models/Progress.js"
+import { log } from "console";
 export const getAllCourses = TryCatch(async(req,res)=>{
     const courses = await Courses.find();
     
@@ -184,9 +185,15 @@ export const checkout = TryCatch(async (req, res) => {
 
 
   export const generateCourseReport = TryCatch(async (req, res) => {
-    const { id: courseId } = req.params; // Extract course ID from URL parameters
+    const { id: courseId } = req.params;
   
-    // Get all users subscribed to the course
+    // Ensure the course exists and fetch its details
+    const course = await Courses.findById(courseId).populate('owner', 'name email');
+    if (!course) {
+      return res.status(404).json({ message: "Course not found." });
+    }
+  
+    // Get users subscribed to the course
     const subscribedUsers = await User.find({ subscription: courseId }).select("name email");
   
     if (!subscribedUsers.length) {
@@ -214,4 +221,5 @@ export const checkout = TryCatch(async (req, res) => {
       progress: progressData,
     });
   });
+  
   

@@ -17,10 +17,10 @@ const CourseCard = ({ course }) => {
 
   // Check if the user is enrolled when the component mounts or user data changes
   useEffect(() => {
-    if (user && user.subscription.includes(course._id)) {
+    if (user && Array.isArray(user.subscription) && user.subscription.includes(course._id)) {
       setIsEnrolled(true);
     }
-  }, [user, course._id]); // Re-run effect when user or course changes
+  }, [user, course._id]);  // Re-run effect when user or course changes
 
   // Unenroll handler
   const unenrollHandler = async (courseId) => {
